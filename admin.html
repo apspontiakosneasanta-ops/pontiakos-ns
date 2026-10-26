@@ -29,6 +29,21 @@
 <section class="panel"><div class="toolbar"><h2>Περιεχόμενο ιστοσελίδας</h2><div class="actions"><select id="filter" aria-label="Φιλτράρισμα κατηγορίας"><option value="all">Όλες οι κατηγορίες</option><option value="news">Νέα</option><option value="matches">Αγώνες</option><option value="results">Αποτελέσματα</option><option value="players">Παίκτες</option><option value="sponsors">Χορηγοί</option><option value="videos">Βίντεο</option></select><button class="secondary" id="refresh" type="button">Ανανέωση</button></div></div><div id="items" class="sub">Φόρτωση…</div></section>
 <p class="sub"><a href="./index.html" style="color:#e8c45d">← Επιστροφή στην ιστοσελίδα</a></p>
 </main>
+<script>
+document.addEventListener("click",function(event){
+  const button=event.target.closest("#uploadImage");
+  if(!button)return;
+  const status=document.getElementById("imageUploadStatus");
+  if(!status)return;
+  status.textContent="Το πάτημα καταγράφηκε. Έλεγχος συστήματος…";
+  window.setTimeout(function(){
+    if(status.textContent==="Το πάτημα καταγράφηκε. Έλεγχος συστήματος…"){
+      status.textContent="Το κουμπί πατήθηκε, αλλά δεν ξεκίνησε η μεταφόρτωση. Κάνε ανανέωση της σελίδας και δοκίμασε ξανά.";
+      document.getElementById("status").textContent="Το σύστημα διαχείρισης δεν ολοκλήρωσε την εκκίνηση. Αν το μήνυμα παραμείνει, θα το διορθώσουμε χωρίς να αλλάξεις ρυθμίσεις.";
+    }
+  },1500);
+},true);
+</script>
 <script type="module">
 import { getSupabase, requireAdmin } from "./js/auth.js";
 const $=id=>document.getElementById(id);

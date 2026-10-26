@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>Δημιουργία λογαριασμού διαχειριστή | Ποντιακός Νέας Σάντας</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#101114;color:#f6f6f6}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px}
+main{width:min(100%,440px);padding:28px;border:1px solid #34363d;border-radius:18px;background:#191a20}
+h1{font-size:1.5rem;margin:0 0 8px}p{color:#c1c3cc;line-height:1.5}
+label{display:block;margin:18px 0 7px}input{width:100%;padding:13px;border:1px solid #4a4d57;border-radius:9px;background:#101114;color:#fff;font:inherit}
+button{width:100%;margin-top:22px;padding:13px;border:0;border-radius:9px;background:#d6aa37;color:#171717;font:inherit;font-weight:700;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}#message{min-height:1.5em;color:#ffd66b}a{color:#e8c45d}
+</style>
+</head>
+<body><main>
+<h1>Δημιουργία λογαριασμού διαχειριστή</h1>
+<p>Δημιούργησε λογαριασμό για το email του συλλόγου. Η δημιουργία λογαριασμού από μόνη της δεν δίνει δικαιώματα διαχειριστή· αυτά θα ενεργοποιηθούν ξεχωριστά.</p>
+<form id="signup-form">
+<label for="email">Email</label><input id="email" name="email" type="email" value="apspontiakosneasanta@gmail.com" readonly required>
+<label for="password">Δημιούργησε κωδικό πρόσβασης</label><input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+<label for="confirm">Επανάλαβε τον κωδικό</label><input id="confirm" name="confirm" type="password" autocomplete="new-password" minlength="8" required>
+<button id="submit" type="submit">Δημιουργία λογαριασμού</button>
+</form>
+<p id="message" role="status" aria-live="polite"></p>
+<p><a href="./login.html">Μετάβαση στη σύνδεση</a> · <a href="./index.html">Αρχική σελίδα</a></p>
+</main>
+<script type="module">
+import { getSupabase } from "./js/auth.js";
+const form=document.querySelector("#signup-form"), message=document.querySelector("#message"), button=document.querySelector("#submit");
+form.addEventListener("submit",async event=>{
+ event.preventDefault(); message.textContent="";
+ if(form.password.value!==form.confirm.value){message.textContent="Οι κωδικοί δεν ταιριάζουν.";return;}
+ button.disabled=true;
+ try{
+  const supabase=getSupabase();
+  const {data,error}=await supabase.auth.signUp({email:form.email.value,password:form.password.value,options:{emailRedirectTo:new URL("login.html",location.href).href}});
+  if(error) throw error;
+  if(data.session){message.textContent="Ο λογαριασμός δημιουργήθηκε. Θα ενεργοποιηθούν τώρα τα δικαιώματα διαχειριστή από το σύστημα.";}
+  else{message.textContent="Το αίτημα ολοκληρώθηκε. Έλεγξε τα εισερχόμενα και τα ανεπιθύμητα του email σου και πάτησε τον σύνδεσμο επιβεβαίωσης, αν σου ζητηθεί. Μετά γράψε εδώ «έτοιμο» για να ενεργοποιήσω τα δικαιώματα διαχειριστή.";}
+ }catch(error){message.textContent=error.message==="User already registered"?"Αυτό το email έχει ήδη λογαριασμό. Πήγαινε στη σύνδεση ή χρησιμοποίησε την επαναφορά κωδικού.":"Δεν ήταν δυνατή η δημιουργία λογαριασμού. Έλεγξε τις ρυθμίσεις Auth του Supabase και δοκίμασε ξανά.";console.error("Signup error:",error);}
+ finally{button.disabled=false;}
+});
+</script></body></html>

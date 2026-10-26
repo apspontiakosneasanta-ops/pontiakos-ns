@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111111"><title>Σύνδεση διαχειριστή | Ποντιακός Νέας Σάντας</title>
+<style>:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#101114;color:#f6f6f6}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px}main{width:min(100%,420px);padding:28px;border:1px solid #34363d;border-radius:18px;background:#191a20}h1{font-size:1.55rem;margin:0 0 8px}p{color:#c1c3cc;line-height:1.5}label{display:block;margin:18px 0 7px}input{width:100%;padding:13px;border:1px solid #4a4d57;border-radius:9px;background:#101114;color:#fff;font:inherit}button{width:100%;margin-top:22px;padding:13px;border:0;border-radius:9px;background:#d6aa37;color:#171717;font:inherit;font-weight:700;cursor:pointer}#message{min-height:1.5em;color:#ffd66b}a{color:#e8c45d}</style></head>
+<body><main><h1>Σύνδεση διαχειριστή</h1><p>Η πρόσβαση προορίζεται αποκλειστικά για εξουσιοδοτημένους διαχειριστές του συλλόγου.</p>
+<form id="login-form"><label for="email">Email διαχειριστή</label><input id="email" name="email" type="email" autocomplete="username" required><label for="password">Κωδικός πρόσβασης</label><input id="password" name="password" type="password" autocomplete="current-password" required><button id="submit" type="submit">Σύνδεση</button></form>
+<p id="message" role="status" aria-live="polite"></p><p><a href="./index.html">Επιστροφή στην αρχική σελίδα</a></p></main>
+<script type="module">
+import { getSupabase } from "./js/auth.js";
+const form=document.querySelector("#login-form"), message=document.querySelector("#message"), button=document.querySelector("#submit");
+if(new URLSearchParams(location.search).get("error")==="not-admin") message.textContent="Ο λογαριασμός δεν έχει δικαιώματα διαχειριστή.";
+form.addEventListener("submit",async event=>{event.preventDefault();message.textContent="";button.disabled=true;try{const supabase=getSupabase();const {error}=await supabase.auth.signInWithPassword({email:form.email.value.trim(),password:form.password.value});if(error)throw error;location.assign(new URL("admin.html",location.href).href);}catch(error){message.textContent=error.message==="Invalid login credentials"?"Λανθασμένο email ή κωδικός.":"Δεν ήταν δυνατή η σύνδεση. Έλεγξε τις ρυθμίσεις και δοκίμασε ξανά.";console.error("Login error:",error);}finally{button.disabled=false;}});
+</script></body></html>

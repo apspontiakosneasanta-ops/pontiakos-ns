@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#111111"><title>Διαχείριση | Ποντιακός Νέας Σάντας</title>
+<style>:root{color-scheme:dark;font-family:system-ui,-apple-system,sans-serif;background:#101114;color:#f6f6f6}*{box-sizing:border-box}body{margin:0;padding:24px}main{max-width:850px;margin:40px auto}header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.panel{margin-top:24px;padding:24px;border:1px solid #34363d;border-radius:16px;background:#191a20}button{padding:11px 16px;border:0;border-radius:8px;background:#d6aa37;color:#171717;font:inherit;font-weight:700;cursor:pointer}p{color:#c1c3cc;line-height:1.6}a{color:#e8c45d}</style></head>
+<body><main><header><h1>Πίνακας διαχείρισης</h1><button id="logout" hidden>Αποσύνδεση</button></header><section class="panel"><p id="status" role="status" aria-live="polite">Έλεγχος πρόσβασης…</p><p>Ο πίνακας είναι αρχικό πλαίσιο. Οι λειτουργίες διαχείρισης θα προστεθούν αφού ολοκληρωθεί η ρύθμιση Supabase.</p><a href="./index.html">Επιστροφή στην ιστοσελίδα</a></section></main>
+<script type="module">
+import { getSupabase, requireAdmin } from "./js/auth.js";
+const status=document.querySelector("#status"), logout=document.querySelector("#logout");
+try{const supabase=getSupabase();const user=await requireAdmin(supabase);if(user){status.textContent="Συνδέθηκες ως εξουσιοδοτημένος διαχειριστής: "+user.email;logout.hidden=false;}logout.addEventListener("click",async()=>{logout.disabled=true;await supabase.auth.signOut();location.replace(new URL("login.html",location.href).href);});}catch(error){status.textContent="Η σύνδεση δεν έχει ρυθμιστεί ακόμη. Ο πίνακας δεν είναι διαθέσιμος.";console.error("Admin setup error:",error);}
+</script></body></html>

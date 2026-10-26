@@ -89,6 +89,8 @@
       gap: 8px;
     }
     .menu a:hover { background: #f8f1df; }
+    .menu a.sub-menu { background: #faf8f2; border-style: dashed; font-weight: 600; }
+    .menu a.sub-menu::before { content: "↳"; color: var(--gold); margin-right: 5px; }
     .emoji { font-size: 25px; }
     .news {
       margin-top: 26px;
@@ -130,10 +132,21 @@
   <main>
     <h2 class="section-title">Μενού εφαρμογής</h2>
     <nav class="menu" aria-label="Κύριο μενού">
-      <a href="https://apspontiakosns.blogspot.com/p/theme-root-primary-182848-secondary.html" target="_blank" rel="noopener noreferrer"><span class="emoji">⚽</span>Πρόγραμμα</a>
-      <a href="https://apspontiakosns.blogspot.com/p/pontiakos-standings-width100-max.html" target="_blank" rel="noopener noreferrer"><span class="emoji">🏆</span>Βαθμολογία</a>
-      <a href="https://www.eps-kilkis.gr/" target="_blank" rel="noopener noreferrer"><span class="emoji">🏟️</span>ΕΠΣ Κιλκίς</a>
-      <a href="https://www.twitch.tv/appontiakosnswebtv" target="_blank" rel="noopener noreferrer"><span class="emoji">📺</span>pontiakostv</a>
+      <a href="https://apspontiakosns.blogspot.com/" target="_blank" rel="noopener noreferrer"><span class="emoji">🏠</span>Αρχική</a>
+      <a href="https://apspontiakosns.blogspot.com/search/label/%CE%9D%CE%95%CE%91?&amp;max-results=5" target="_blank" rel="noopener noreferrer"><span class="emoji">📰</span>Νέα</a>
+      <a href="https://apspontiakosns.blogspot.com/search/label/%CE%91%CE%9D%CE%91%CE%9A%CE%9F%CE%99%CE%9D%CE%A9%CE%A3%CE%95%CE%99%CE%A3?&amp;max-results=5" target="_blank" rel="noopener noreferrer"><span class="emoji">📢</span>Ανακοινώσεις</a>
+      <a class="sub-menu" href="https://apspontiakosns.blogspot.com/p/blog-page_27.html" target="_blank" rel="noopener noreferrer"><span class="emoji">📜</span>Ιστορία</a>
+      <a href="https://apspontiakosns.blogspot.com/search/label/%CE%A0%CE%A1%CE%A9%CE%A4%CE%91%CE%98%CE%9B%CE%97%CE%9C%CE%91?&amp;max-results=5" target="_blank" rel="noopener noreferrer"><span class="emoji">⚽</span>Αγώνες</a>
+      <a class="sub-menu" href="https://apspontiakosns.blogspot.com/search/label/%CE%A0%CE%A1%CE%A9%CE%A4%CE%91%CE%98%CE%9B%CE%97%CE%9C%CE%91?&amp;max-results=5" target="_blank" rel="noopener noreferrer"><span class="emoji">🏅</span>Πρωτάθλημα</a>
+      <a class="sub-menu" href="https://apspontiakosns.blogspot.com/search/label/%CE%9A%CE%A5%CE%A0%CE%95%CE%9B%CE%9B%CE%9F?&amp;max-results=5" target="_blank" rel="noopener noreferrer"><span class="emoji">🏆</span>Κύπελλο</a>
+      <a href="https://apspontiakosns.blogspot.com/p/theme-root-primary-182848-secondary.html" target="_blank" rel="noopener noreferrer"><span class="emoji">📅</span>Πρόγραμμα</a>
+      <a href="https://apspontiakosns.blogspot.com/p/pontiakos-standings-width100-max.html" target="_blank" rel="noopener noreferrer"><span class="emoji">📊</span>Βαθμολογία</a>
+      <a href="https://apspontiakosns.blogspot.com/search/label/%CE%A7%CE%9F%CE%A1%CE%97%CE%93%CE%9F%CE%99?&amp;max-results=5" target="_blank" rel="noopener noreferrer"><span class="emoji">🤝</span>Χορηγοί</a>
+      <a class="sub-menu" href="https://apspontiakosns.blogspot.com/p/blog-page_213.html" target="_blank" rel="noopener noreferrer"><span class="emoji">🌟</span>Οι Χορηγοί μας</a>
+      <a class="sub-menu" href="https://apspontiakosns.blogspot.com/search/label/%CE%A7%CE%9F%CE%A1%CE%97%CE%93%CE%9F%CE%99?&amp;max-results=5" target="_blank" rel="noopener noreferrer"><span class="emoji">🗞️</span>Παρουσιάσεις</a>
+      <a class="sub-menu" href="https://apspontiakosns.blogspot.com/p/20262027.html" target="_blank" rel="noopener noreferrer"><span class="emoji">💛</span>Γίνε Χορηγός</a>
+      <a href="https://apspontiakosns.blogspot.com/p/aps-pontiakos-neas-santas-store-black_0962768408.html" target="_blank" rel="noopener noreferrer"><span class="emoji">🛍️</span>STORE</a>
+      <a href="https://apspontiakosns.blogspot.com/p/202627.html" target="_blank" rel="noopener noreferrer"><span class="emoji">🎟️</span>Διαρκείας</a>
     </nav>
 
     <section class="news" id="news">

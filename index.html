@@ -247,8 +247,8 @@ try{const {data,error}=await client.from("club_content").select("id,section,titl
       const links = entry.link || [];
       const link = links.find(x => x.rel === "alternate" && x.href && /^https:\/\//i.test(x.href));
       if (link) {
-        const a = document.createElement("a"); a.href = link.href; a.target = "_blank";
-        a.rel = "noopener noreferrer"; a.textContent = "Διάβασε ολόκληρη την ανάρτηση ↗"; article.append(a);
+        const a = document.createElement("a"); a.href = "./article.html?post=" + encodeURIComponent(link.href);
+        a.textContent = "Διάβασε την ανακοίνωση ↗"; article.append(a);
       }
       target.append(article);
     });

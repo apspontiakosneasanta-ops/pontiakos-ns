@@ -1,0 +1,21 @@
+{
+  "id": "./index.html",
+  "name": "ΑΠΣ Ποντιακός Νέας Σάντας",
+  "short_name": "Ποντιακός",
+  "description": "Η επίσημη εφαρμογή του ΑΠΣ Ποντιακός Νέας Σάντας",
+  "lang": "el",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

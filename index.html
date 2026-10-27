@@ -65,6 +65,10 @@
     .hero h2 { margin: 0 0 8px; font-size: 27px; }
     .hero p { margin: 0; line-height: 1.5; }
     main { max-width: 760px; margin: auto; padding: 18px; }
+    .install-panel { background:#080808; color:#fff; padding:16px; text-align:center; border-bottom:2px solid #c5a04a; }
+    .install-button { display:inline-block; width:100%; max-width:440px; padding:14px 18px; border:2px solid #c5a04a; border-radius:8px; background:#080808; color:#c5a04a; font-weight:bold; font-size:16px; cursor:pointer; }
+    .install-help { display:none; max-width:520px; margin:12px auto 0; color:#fff; font-size:13px; line-height:1.55; }
+    .install-help.visible { display:block; }
     .section-title {
       font-size: 19px;
       border-left: 4px solid var(--gold);
@@ -120,6 +124,14 @@
     <h1>ΑΠΣ ΠΟΝΤΙΑΚΟΣ ΝΕΑΣ ΣΑΝΤΑΣ</h1>
     <div class="subtitle">OFFICIAL CLUB APP · 1928</div>
   </header>
+
+  <section class="install-panel" aria-label="Εγκατάσταση εφαρμογής">
+    <button id="installAppButton" class="install-button" type="button">📲 ΕΓΚΑΤΑΣΤΑΣΗ ΕΦΑΡΜΟΓΗΣ</button>
+    <div id="installHelp" class="install-help" aria-live="polite">
+      <strong>Android:</strong> άνοιξε το μενού του Chrome (⋮) και επίλεξε «Εγκατάσταση εφαρμογής» ή «Προσθήκη στην αρχική οθόνη».<br>
+      <strong>iPhone:</strong> πάτησε «Κοινή χρήση» στο Safari και μετά «Προσθήκη στην οθόνη Αφετηρίας».
+    </div>
+  </section>
 
   <section class="hero">
     <h2>Μία ομάδα. Μία ιστορία.</h2>
@@ -271,6 +283,33 @@ try{const {data,error}=await client.from("club_content").select("id,section,titl
     target.append(p);
   };
   document.head.append(script);
+})();
+</script>
+
+<script>
+(() => {
+  const button = document.getElementById("installAppButton");
+  const help = document.getElementById("installHelp");
+  let installPrompt = null;
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  if (isStandalone) { button.textContent = "✓ Η ΕΦΑΡΜΟΓΗ ΕΙΝΑΙ ΕΓΚΑΤΕΣΤΗΜΕΝΗ"; button.disabled = true; return; }
+  window.addEventListener("beforeinstallprompt", event => {
+    event.preventDefault(); installPrompt = event;
+    button.textContent = "📲 ΕΓΚΑΤΑΣΤΑΣΗ ΕΦΑΡΜΟΓΗΣ";
+  });
+  button.addEventListener("click", async () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+      return;
+    }
+    help.classList.toggle("visible");
+  });
+  window.addEventListener("appinstalled", () => {
+    button.textContent = "✓ Η ΕΦΑΡΜΟΓΗ ΕΓΚΑΤΑΣΤΑΘΗΚΕ";
+    button.disabled = true; help.classList.remove("visible");
+  });
 })();
 </script>
 

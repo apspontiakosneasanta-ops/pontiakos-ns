@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111111">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./logo.png">
   <meta name="description" content="Η επίσημη εφαρμογή του ΑΠΣ Ποντιακός Νέας Σάντας">
   <title>Ποντιακός Νέας Σάντας | Official App</title>
   <style>
@@ -270,5 +274,8 @@ try{const {data,error}=await client.from("club_content").select("id,section,titl
 })();
 </script>
 
+<script>
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {})); }
+</script>
 </body>
 </html>

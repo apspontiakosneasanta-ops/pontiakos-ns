@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>Ανακοίνωση | Ποντιακός Νέας Σάντας</title>
+<style>
+:root{--black:#111;--gold:#b89a55;--gray:#f2f2f2}
+*{box-sizing:border-box}body{margin:0;background:var(--gray);color:var(--black);font-family:Arial,sans-serif;line-height:1.65}
+header{background:#fff;text-align:center;padding:18px;border-bottom:3px solid var(--gold)}
+header a{color:var(--black);text-decoration:none;font-weight:bold}
+main{max-width:800px;margin:24px auto;padding:0 16px}
+article{background:#fff;border-radius:12px;padding:clamp(18px,4vw,32px);box-shadow:0 2px 12px #0000000d}
+h1{font-size:clamp(24px,4vw,34px);line-height:1.25;margin:0 0 8px}
+.meta{color:#666;font-size:14px;margin-bottom:22px}
+.content img{max-width:100%;height:auto;border-radius:8px}
+.content a{color:#604914;overflow-wrap:anywhere}
+.content iframe{max-width:100%}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.button{display:inline-block;background:var(--black);color:white!important;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:bold}
+.button.secondary{background:#eee;color:var(--black)!important}
+.notice{color:#555}
+footer{text-align:center;padding:24px 12px;color:#555;font-size:13px}
+</style>
+</head>
+<body>
+<header><a href="./index.html">⚽ ΑΠΣ ΠΟΝΤΙΑΚΟΣ ΝΕΑΣ ΣΑΝΤΑΣ</a></header>
+<main><article>
+<h1 id="title">Φόρτωση ανακοίνωσης…</h1>
+<div id="date" class="meta"></div>
+<div id="content" class="content"><p class="notice">Παρακαλώ περίμενε.</p></div>
+<div class="actions"><a class="button secondary" href="./index.html#news">← Επιστροφή στην αρχική</a><a id="original" class="button" href="https://apspontiakosns.blogspot.com/" target="_blank" rel="noopener noreferrer">Δες την αρχική ανάρτηση στο Blogspot ↗</a></div>
+</article></main>
+<footer>ΑΠΣ Ποντιακός Νέας Σάντας · Με υπερηφάνεια από το 1928</footer>
+<script>
+(function(){
+ const params=new URLSearchParams(location.search);
+ const wanted=params.get("post");
+ const title=document.getElementById("title"),date=document.getElementById("date"),content=document.getElementById("content"),original=document.getElementById("original");
+ if(!wanted){title.textContent="Δεν βρέθηκε η ανακοίνωση";content.textContent="Άνοιξε την ανακοίνωση από την ενότητα Νέα της αρχικής σελίδας.";return;}
+ let targetUrl;
+ try{targetUrl=new URL(wanted);if(targetUrl.protocol!=="https:"||targetUrl.hostname!=="apspontiakosns.blogspot.com")throw new Error();original.href=targetUrl.href;}
+ catch(e){title.textContent="Μη έγκυρος σύνδεσμος";content.textContent="Ο σύνδεσμος της ανακοίνωσης δεν είναι έγκυρος.";return;}
+ window.pontiakosArticleFeed=function(payload){
+  const entries=payload&&payload.feed&&payload.feed.entry?payload.feed.entry:[];
+  const entry=entries.find(e=>(e.link||[]).some(l=>l.rel==="alternate"&&l.href&&new URL(l.href).pathname===targetUrl.pathname));
+  if(!entry){title.textContent="Δεν βρέθηκε η ανακοίνωση";content.textContent="Δεν μπορέσαμε να φορτώσουμε αυτή την ανακοίνωση. Μπορείς να τη δεις στην αρχική ανάρτηση στο Blogspot.";return;}
+  title.textContent=entry.title&&entry.title.$t?entry.title.$t:"Ανακοίνωση Ποντιακού";
+  if(entry.published&&entry.published.$t)date.textContent=new Date(entry.published.$t).toLocaleDateString("el-GR",{year:"numeric",month:"long",day:"numeric"});
+  const raw=entry.content&&entry.content.$t?entry.content.$t:(entry.summary&&entry.summary.$t?entry.summary.$t:"");
+  const parsed=new DOMParser().parseFromString(raw,"text/html");
+  parsed.querySelectorAll("script,style,object,embed,form,iframe,link,meta").forEach(el=>el.remove());
+  parsed.body.querySelectorAll("*").forEach(el=>{
+   [...el.attributes].forEach(a=>{if(/^on/i.test(a.name)||a.name==="srcdoc")el.removeAttribute(a.name);});
+   if(el.hasAttribute("href")){try{const u=new URL(el.getAttribute("href"),targetUrl);if(!["https:","mailto:"].includes(u.protocol))el.removeAttribute("href");else{el.href=u.href;if(u.protocol==="https:"){el.target="_blank";el.rel="noopener noreferrer";}}}catch{el.removeAttribute("href");}}
+   if(el.hasAttribute("src")){try{const u=new URL(el.getAttribute("src"),targetUrl);if(u.protocol==="https:")el.src=u.href;else el.removeAttribute("src");}catch{el.removeAttribute("src");}}
+  });
+  content.replaceChildren(...Array.from(parsed.body.childNodes).map(n=>document.importNode(n,true)));
+  if(!content.textContent.trim()&&!content.querySelector("img"))content.textContent="Η ανακοίνωση δεν περιέχει διαθέσιμο κείμενο.";
+ };
+ const script=document.createElement("script");
+ script.src="https://apspontiakosns.blogspot.com/feeds/posts/default?alt=json-in-script&max-results=100&callback=pontiakosArticleFeed";
+ script.onerror=function(){title.textContent="Δεν φορτώθηκε η ανακοίνωση";content.textContent="Παρουσιάστηκε πρόβλημα φόρτωσης. Δοκίμασε να ανοίξεις την αρχική ανάρτηση στο Blogspot.";};
+ document.head.append(script);
+})();
+</script>
+</body></html>

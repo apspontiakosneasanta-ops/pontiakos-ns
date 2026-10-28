@@ -20,6 +20,15 @@
 <div id="installStatsStatus" class="status" role="status" aria-live="polite"></div>
 <div id="installStatsRecent" class="sub">Φόρτωση στατιστικών…</div>
 </section>
+<section class="panel" id="gaVisitorPanel">
+<div class="toolbar"><h2>🌍 Επισκέπτες Google Analytics</h2><button class="secondary" id="refreshGaMaps" type="button">Ανανέωση χαρτών</button></div>
+<p class="sub">Οι τοποθεσίες είναι κατά προσέγγιση και βασίζονται σε πόλη/χώρα που αναφέρει το Google Analytics. Δεν εμφανίζεται ακριβής θέση ή ταυτότητα επισκέπτη.</p>
+<div class="grid"><div><label for="gaStartDate">Από ημερομηνία</label><input type="date" id="gaStartDate"></div><div><label for="gaEndDate">Έως ημερομηνία</label><input type="date" id="gaEndDate"></div></div>
+<div id="gaVisitorStatus" class="status" role="status" aria-live="polite">Φόρτωση…</div>
+<div class="grid" style="margin-top:14px">
+<div class="panel"><h3>🔴 Ζωντανά τώρα</h3><p class="meta">Ενεργοί χρήστες ανά πόλη</p><div id="gaLiveMap" style="height:300px;border-radius:10px;overflow:hidden;background:#22242b"></div><div id="gaLiveList" class="sub"></div></div>
+<div class="panel"><h3>📅 Ιστορικό επισκεπτών</h3><p class="meta">Μοναδικοί χρήστες στο επιλεγμένο διάστημα</p><div id="gaHistoryMap" style="height:300px;border-radius:10px;overflow:hidden;background:#22242b"></div><div id="gaHistoryList" class="sub"></div></div>
+</div></section>
 <section class="panel">
 <div class="toolbar"><h2 id="formHeading">Προσθήκη νέου περιεχομένου</h2><button class="secondary" id="cancelEdit" hidden>Ακύρωση αλλαγών</button></div>
 <form id="editor"><input type="hidden" id="recordId">

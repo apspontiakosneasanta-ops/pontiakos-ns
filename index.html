@@ -294,7 +294,16 @@ try{const {data,error}=await client.from("club_content").select("id,section,titl
 })();
 </script>
 
-<script>
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./js/supabase-config.js";
+const analyticsDb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const detectPlatform = () => /iPhone|iPad|iPod/i.test(navigator.userAgent) ? "ios" : /Android/i.test(navigator.userAgent) ? "android" : /Mobi|Windows|Macintosh|Linux/i.test(navigator.userAgent) ? "desktop" : "unknown";
+async function recordInstallEvent(eventType) {
+  if (typeof window.gtag === "function") window.gtag("event", eventType, { event_category: "PWA", platform: detectPlatform() });
+  try { await analyticsDb.from("app_install_events").insert({ event_type: eventType, platform: detectPlatform() }); }
+  catch (error) { console.warn("Install event was not recorded.", error); }
+}
 (() => {
   const button = document.getElementById("installAppButton");
   const help = document.getElementById("installHelp");
@@ -308,13 +317,15 @@ try{const {data,error}=await client.from("club_content").select("id,section,titl
   button.addEventListener("click", async () => {
     if (installPrompt) {
       installPrompt.prompt();
-      await installPrompt.userChoice;
+      const choice = await installPrompt.userChoice;
+      if (choice && choice.outcome === "accepted") await recordInstallEvent("install_prompt_accepted");
       installPrompt = null;
       return;
     }
     help.classList.toggle("visible");
   });
   window.addEventListener("appinstalled", () => {
+    recordInstallEvent("app_installed");
     button.textContent = "✓ Η ΕΦΑΡΜΟΓΗ ΕΓΚΑΤΑΣΤΑΘΗΚΕ";
     button.disabled = true; help.classList.remove("visible");
   });

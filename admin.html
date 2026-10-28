@@ -99,9 +99,9 @@ function clearGaMap(which){
   const el=$(which==="live"?"gaLiveMap":"gaHistoryMap");
   if(gaMaps[which]){gaMaps[which].remove();gaMaps[which]=null;}
   el.innerHTML="";
-  if(!window.L){el.textContent="Ο χάρτης φορτώνει…";return null;}
+  if(!window.L){el.textContent="Δεν φορτώθηκε η βιβλιοθήκη χαρτών. Έλεγξε σύνδεση και ανανέωσε τη σελίδα.";return null;}
   const map=L.map(el).setView([35.8,24.5],3);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© OpenStreetMap"}).addTo(map);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{maxZoom:18,attribution:"© OpenStreetMap © CARTO"}).addTo(map);
   gaMaps[which]=map;return map;
 }
 async function drawGaMap(which,rows){
